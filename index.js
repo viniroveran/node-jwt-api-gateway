@@ -18,15 +18,15 @@ var jsonParser = bodyParser.json()
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.listen(10000, () => {
-    console.log('Basic API Gateway + JWT running!');
+    console.log('Basic API Gateway + JWT running on port 10000! http://localhost:10000/');
 });
 
 function verifyJWT(req, res, next) {
     const token = req.headers['x-access-token'];
     if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
 
-    jwt.verify(token, process.env.SECRET, function (err, decoded) {
-        if (err) return res.status(500).json({ auth: false, message: 'Failed to authenticate token.' });
+    jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
+        if (err) return res.status(403).json({ auth: false, message: 'Failed to authenticate token.' });
 
         // se tudo estiver ok, salva no request para uso posterior
         req.userId = decoded.id;
@@ -41,13 +41,13 @@ app.post('/login', urlencodedParser, (req, res, next) => {
     if (req.body.user === 'viniroveran' && req.body.password === '1234') {
         const id = 1; // user id
         const access_level = 1; // user access level
-        const token = jwt.sign({ id, access_level }, process.env.SECRET, {
+        const token = jwt.sign({ id, access_level }, process.env.JWT_SECRET, {
             expiresIn: 300 // token expiration time, in seconds
         });
         return res.json({ auth: true, token: token });
     }
 
-    res.status(500).json({ message: 'Invalid login' });
+    res.status(403).json({ message: 'Invalid login' });
 })
 
 app.post('/logout', function(req, res) {
