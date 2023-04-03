@@ -3,6 +3,9 @@ A simple Node.js API Gateway + JWT
 
 It also contains two fake APIs, `api-fake-cars` and `api-fake-games`
 
+## Requirements
+NodeJS `16.20.0`
+
 ## Configuring environment variables
 ```bash
 cp .env.example .env
