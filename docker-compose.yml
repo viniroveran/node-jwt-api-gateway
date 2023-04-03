@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  gateway_service:
+    build: ./
+    command: node index.js
+    volumes:
+      - ./:/app/
+    ports:
+      - "10000:10000"
+    environment:
+      - JWT_SECRET=WD3$kc9e3&io9LqH*yS4kCx6EW!er&9m7H3$dzEor*Eg4M7A9^
+
+  cars_service:
+    build: ./api-fake-cars
+    command: node index.js
+    volumes:
+      - ./api-fake-cars/:/app/
+    ports:
+      - "6000:6000"
+    environment:
+      - PORT=6000
+
+  games_service:
+    build: ./api-fake-games
+    command: node index.js
+    volumes:
+      - ./api-fake-games/:/app/
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
