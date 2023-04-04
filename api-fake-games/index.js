@@ -1,4 +1,4 @@
-require("dotenv-safe").config();
+require("dotenv").config();
 const express = require('express'),
     app     = express(),
     port    = parseInt(process.env.PORT, 10) || 5000;

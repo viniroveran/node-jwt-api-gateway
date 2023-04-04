@@ -1,4 +1,4 @@
-require("dotenv-safe").config();
+require("dotenv").config();
 
 const httpProxy = require('express-http-proxy');
 const logger = require('morgan');
