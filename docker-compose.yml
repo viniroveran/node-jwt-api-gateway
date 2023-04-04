@@ -48,4 +48,4 @@ services:
 
 networks:
   api_network:
-    name: gateway_network
+    name: custom_network
