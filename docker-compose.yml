@@ -7,19 +7,20 @@ services:
     volumes:
       - ./:/app/
     ports:
-      - "10000:10000"
+      - "80:4000"
     environment:
-      - JWT_SECRET=WD3$kc9e3&io9LqH*yS4kCx6EW!er&9m7H3$dzEor*Eg4M7A9^
-
-  cars_service:
-    build: ./api-fake-cars
-    command: node index.js
-    volumes:
-      - ./api-fake-cars/:/app/
-    ports:
-      - "6000:6000"
-    environment:
-      - PORT=6000
+      - JWT_SECRET=WD3@kc9e3&io9LqH*yS4kCx6EW!er&9m7H3&dzEor*Eg4M7A9^ # TODO: move to docker secrets
+      - GATEWAY_IP=gateway_service
+      - GATEWAY_PORT=4000
+      - GAMES_IP=games_service
+      - GAMES_PORT=5000
+      - CARS_IP=cars_service
+      - CARS_PORT=6000
+    networks:
+      - api_network
+    depends_on:
+      - games_service
+      - cars_service
 
   games_service:
     build: ./api-fake-games
@@ -30,3 +31,21 @@ services:
       - "5000:5000"
     environment:
       - PORT=5000
+    networks:
+      - api_network
+
+  cars_service:
+    build: ./api-fake-cars
+    command: node index.js
+    volumes:
+      - ./api-fake-cars/:/app/
+    ports:
+      - "6000:6000"
+    environment:
+      - PORT=6000
+    networks:
+      - api_network
+
+networks:
+  api_network:
+    name: gateway_network

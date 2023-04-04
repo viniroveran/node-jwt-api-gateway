@@ -1,14 +1,14 @@
-//index.js
 require("dotenv-safe").config();
 
 const httpProxy = require('express-http-proxy');
-const express = require('express');
-var logger = require('morgan');
-var bodyParser = require('body-parser')
+const logger = require('morgan');
+const bodyParser = require('body-parser')
 const jwt = require('jsonwebtoken');
+const express = require('express'),
+      app     = express(),
+      port    = parseInt(process.env.GATEWAY_PORT, 10) || 4000;
 
-const app = express();
-
+// Enable development logs
 app.use(logger('dev'));
 
 // create application/json parser
@@ -17,8 +17,8 @@ var jsonParser = bodyParser.json()
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-app.listen(10000, () => {
-    console.log('Basic API Gateway + JWT running on port 10000! http://localhost:10000/');
+app.listen(port, () => {
+    console.log('Basic API Gateway + JWT running on port ' +  port + '! http://' + process.env.GATEWAY_IP + ':' +  port + '/');
 });
 
 function verifyJWT(req, res, next) {
@@ -56,9 +56,9 @@ app.post('/logout', function(req, res) {
 
 function selectProxyHost(req) {
     if (req.path.startsWith('/games'))
-        return 'http://localhost:5000/';
-    else if (req.path.startsWith('/cinemas'))
-        return 'http://localhost:6000/';
+        return 'http://' + process.env.GAMES_IP + ':' + process.env.GAMES_PORT + '/';
+    else if (req.path.startsWith('/cars'))
+        return 'http://' + process.env.CARS_IP + ':' + process.env.CARS_PORT + '/';
 }
 
 app.use(verifyJWT, (req, res, next) => {
