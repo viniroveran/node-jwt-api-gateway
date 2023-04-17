@@ -58,13 +58,13 @@ app.post('/logout', function(req, res) {
     res.json({ auth: false, token: null });
 })
 
-function selectProxyHost(req) {
-    if (req.path.startsWith('/games'))
-        return 'http://' + process.env.GAMES_IP + ':' + process.env.GAMES_PORT + '/';
-    else if (req.path.startsWith('/cars'))
-        return 'http://' + process.env.CARS_IP + ':' + process.env.CARS_PORT + '/';
-}
+// function selectProxyHost(req) {
+//     if (req.path.startsWith('/games'))
+//         return 'http://' + process.env.GAMES_IP + ':' + process.env.GAMES_PORT + '/';
+//     else if (req.path.startsWith('/cars'))
+//         return 'http://' + process.env.CARS_IP + ':' + process.env.CARS_PORT + '/';
+// }
 
-app.use(verifyJWT, (req, res, next) => {
-    httpProxy(selectProxyHost(req))(req, res, next);
-});
+// app.use(verifyJWT, (req, res, next) => {
+//     httpProxy(selectProxyHost(req))(req, res, next);
+// });
