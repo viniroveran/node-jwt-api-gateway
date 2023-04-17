@@ -34,6 +34,10 @@ function verifyJWT(req, res, next) {
     });
 }
 
+app.get("/", (req, res) => {
+    res.json({message: "Welcome to JWT API Gateway!"});
+});
+
 // Authentication route
 app.post('/login', urlencodedParser, (req, res, next) => {
     // mock authentication
